@@ -1,15 +1,11 @@
-<template>
-  <hello-world />
-</template>
-
 <script>
-import HelloWorld from "../components/HelloWorld";
+// import NavBar from "@/layout/NavBar";
 
 export default {
   name: "HomeView",
 
   components: {
-    HelloWorld,
+    // NavBar,
   },
 };
 </script>
