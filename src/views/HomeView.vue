@@ -1,11 +1,15 @@
-<script>
-// import NavBar from "@/layout/NavBar";
+<template>
+  <div></div>
+</template>
 
-export default {
+<script>
+import { defineComponent } from "vue";
+
+// Components
+
+export default defineComponent({
   name: "HomeView",
 
-  components: {
-    // NavBar,
-  },
-};
+  components: {},
+});
 </script>

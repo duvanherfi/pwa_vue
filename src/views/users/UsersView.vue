@@ -16,10 +16,10 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="item in users" :key="item.id" class="active-row">
+        <tr v-for="item in users" :key="item._id" class="active-row">
           <td>{{ item.name }}</td>
           <td>{{ item.identification }}</td>
-          <td>{{ item.position }}</td>
+          <td>{{ item.position?.name }}</td>
           <td>
             <v-btn class="ma-2" color="indigo" icon="mdi-check">Ver</v-btn>
           </td>
@@ -31,36 +31,46 @@
 
 <script>
 import router from "@/router";
+import { toast } from "vuetify-sonner";
+import { mapState } from "vuex";
 
 export default {
   data() {
     return {
-      users: [
-        {
-          id: "123",
-          name: "Frozen Yogurte",
-          identification: "Frozen Yogurt",
-          position: "159",
-        },
-        {
-          id: "1234",
-          name: "Frozen Yogurtg",
-          identification: "Frozen Yogurt",
-          position: "159",
-        },
-        {
-          id: "1235",
-          name: "Frozen Yogurtr",
-          identification: "Frozen Yogurt",
-          position: "159",
-        },
-      ],
+      users: [],
     };
   },
+  computed: mapState(["user"]),
   methods: {
     addUser: function () {
       router.push("users/add");
     },
+    getUsers() {
+      this.axios
+        .get(
+          "https://api-pwa-building-0e9adbca88d4.herokuapp.com/users?t=" +
+            this.user.session_token
+        )
+        .then((response) => {
+          console.log(response);
+          if (response.status === 200) {
+            this.users = response.data;
+          }
+        })
+        .catch(function (error) {
+          console.log("entrando al catch");
+          console.log(error.response);
+          toast(error.response.data, {
+            cardProps: {
+              color: "warning",
+              class: "my-toast",
+            },
+          });
+        });
+    },
+  },
+  beforeMount() {
+    this.getUsers();
   },
 };
 </script>

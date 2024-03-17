@@ -1,28 +1,25 @@
 <template>
-  <div id="app">
-    <router-view />
-    <v-app id="inspire">
-      <v-app-bar>
-        <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
-
-        <v-app-bar-title>Pwa Building</v-app-bar-title>
-      </v-app-bar>
-      <v-navigation-drawer v-model="drawer">
-        <nav-bar></nav-bar>
-      </v-navigation-drawer>
-      <v-main></v-main>
-    </v-app>
+  <div>
+    <layout v-if="currentUser != null"></layout>
+    <login v-if="currentUser === null"></login>
+    <VSonner position="top-center" expand />
   </div>
 </template>
 
 <style></style>
 <script>
-import NavBar from "@/layout/NavBar.vue";
-
+import Layout from "@/components/Layout.vue";
+import Login from "@/views/Login.vue";
+import { mapGetters } from "vuex";
+import { VSonner } from "vuetify-sonner";
 export default {
-  components: { NavBar },
-  data: () => ({
-    drawer: false,
-  }),
+  components: {
+    Layout,
+    Login,
+    VSonner,
+  },
+  computed: {
+    ...mapGetters(["currentUser"]),
+  },
 };
 </script>

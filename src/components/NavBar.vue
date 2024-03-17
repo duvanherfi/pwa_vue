@@ -1,12 +1,12 @@
 <template>
   <v-list dense nav>
-    <v-list-item v-for="item in items" :key="item.title" link>
-      <v-list-item-icon>
+    <v-list-item v-for="item in items" :key="item.title" link :to="item.path">
+      <v-list-item-media>
         <v-icon>{{ item.icon }}</v-icon>
-      </v-list-item-icon>
-      <v-list-item-content>
+      </v-list-item-media>
+      <v-list-item-media>
         <v-list-item-title> {{ item.title }} </v-list-item-title>
-      </v-list-item-content>
+      </v-list-item-media>
     </v-list-item>
   </v-list>
 </template>
