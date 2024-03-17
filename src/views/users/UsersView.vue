@@ -4,7 +4,12 @@
       <h1>Usuarios</h1>
     </div>
     <div>
-      <v-btn class="add-btn" @click="addUser()">Agregar</v-btn>
+      <v-btn
+        class="add-btn"
+        color="indigo"
+        icon="mdi-plus"
+        @click="addUser()"
+      ></v-btn>
     </div>
     <v-table fixed-header class="styled-table">
       <thead>
@@ -21,7 +26,7 @@
           <td>{{ item.identification }}</td>
           <td>{{ item.position?.name }}</td>
           <td>
-            <v-btn class="ma-2" color="indigo" icon="mdi-check">Ver</v-btn>
+            <v-btn class="ma-2" color="indigo" icon="mdi-pencil"></v-btn>
           </td>
         </tr>
       </tbody>
@@ -80,37 +85,8 @@ h1 {
   margin: 20px;
 }
 
-.styled-table {
-  border-collapse: collapse;
-  margin: 25px 0;
-  font-size: 0.9em;
-  font-family: sans-serif;
-  min-width: 400px;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
-}
-
-.styled-table thead tr {
-  background-color: #009879;
-  color: #ffffff;
-  text-align: left;
-}
-
-.styled-table th,
-.styled-table td {
-  padding: 12px 15px;
-}
-
-.styled-table tbody tr {
-  border-bottom: 1px solid #dddddd;
-}
-
-.styled-table tbody tr:last-of-type {
-  border-bottom: 2px solid #009879;
-}
-
 .styled-table tbody tr.active-row:hover {
   font-weight: bold;
-  color: #009879;
 }
 .add-btn {
   margin: 15px;
