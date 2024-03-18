@@ -14,12 +14,13 @@
     <v-table fixed-header class="styled-table">
       <thead>
         <tr>
-          <th class="text-left">Nombre</th>
-          <th class="text-left">Documento</th>
-          <th class="text-left">Posición</th>
-          <th class="text-left">Acciones</th>
+          <th>Nombre</th>
+          <th>Documento</th>
+          <th>Posición</th>
+          <th>Acciones</th>
         </tr>
       </thead>
+
       <tbody>
         <tr v-for="item in users" :key="item._id" class="active-row">
           <td>{{ item.name }}</td>
@@ -48,6 +49,7 @@ export default {
   data() {
     return {
       users: [],
+      loading: true,
     };
   },
   computed: mapState(["user"]),
@@ -69,6 +71,7 @@ export default {
           if (response.status === 200) {
             this.users = response.data;
           }
+          this.loading = false;
         })
         .catch(function (error) {
           console.log(error.response);
@@ -78,6 +81,7 @@ export default {
               class: "my-toast",
             },
           });
+          this.loading = false;
         });
     },
   },
