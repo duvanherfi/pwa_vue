@@ -48,7 +48,7 @@ export default {
   computed: mapState(["user"]),
   methods: {
     addUser: function () {
-      router.push("users/add");
+      router.push("/users/add").catch(() => {});
     },
     getUsers() {
       this.axios
