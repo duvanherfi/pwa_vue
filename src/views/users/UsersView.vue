@@ -14,19 +14,25 @@
     <v-table fixed-header class="styled-table">
       <thead>
         <tr>
-          <th class="text-left">Nombre</th>
-          <th class="text-left">Documento</th>
-          <th class="text-left">Posición</th>
-          <th class="text-left">Acciones</th>
+          <th>Nombre</th>
+          <th>Documento</th>
+          <th>Posición</th>
+          <th>Acciones</th>
         </tr>
       </thead>
+
       <tbody>
         <tr v-for="item in users" :key="item._id" class="active-row">
           <td>{{ item.name }}</td>
           <td>{{ item.identification }}</td>
           <td>{{ item.position?.name }}</td>
           <td>
-            <v-btn class="ma-2" color="indigo" icon="mdi-pencil"></v-btn>
+            <v-btn
+              class="ma-2"
+              color="indigo"
+              icon="mdi-pencil"
+              @click="updateUser(item._id)"
+            ></v-btn>
           </td>
         </tr>
       </tbody>
@@ -43,12 +49,16 @@ export default {
   data() {
     return {
       users: [],
+      loading: true,
     };
   },
   computed: mapState(["user"]),
   methods: {
     addUser: function () {
       router.push("/users/add").catch(() => {});
+    },
+    updateUser: function (id) {
+      router.push("/users/" + id).catch(() => {});
     },
     getUsers() {
       this.axios
@@ -61,9 +71,9 @@ export default {
           if (response.status === 200) {
             this.users = response.data;
           }
+          this.loading = false;
         })
         .catch(function (error) {
-          console.log("entrando al catch");
           console.log(error.response);
           toast(error.response.data, {
             cardProps: {
@@ -71,6 +81,7 @@ export default {
               class: "my-toast",
             },
           });
+          this.loading = false;
         });
     },
   },
