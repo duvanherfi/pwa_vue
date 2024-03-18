@@ -23,6 +23,16 @@ const routes = [
     props: true,
     component: () => import("../views/users/UpdateUserView.vue"),
   },
+  {
+    path: "/client",
+    name: "client",
+    component: () => import("../views/clients/ClientsView.vue"),
+  },
+  {
+    path: "/client/add",
+    name: "client-add",
+    component: () => import("../views/clients/AddClientView.vue"),
+  },
 ];
 
 const router = createRouter({
