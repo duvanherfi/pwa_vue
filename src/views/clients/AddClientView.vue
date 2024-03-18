@@ -7,7 +7,14 @@
   </v-container>
 </template>
 
-<script></script>
+<script>
+import ClientForm from "../../components/ClientForm";
+
+export default {
+  components: {
+    ClientForm,
+  },
+};</script>
 
 <style>
 h1 {
