@@ -17,6 +17,12 @@ const routes = [
     name: "user-add",
     component: () => import("../views/users/AddUserView.vue"),
   },
+  {
+    path: "/users/:id",
+    name: "user-update",
+    props: true,
+    component: () => import("../views/users/UpdateUserView.vue"),
+  },
 ];
 
 const router = createRouter({

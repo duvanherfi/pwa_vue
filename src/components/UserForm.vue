@@ -25,15 +25,6 @@
       <v-row>
         <v-col cols="12" md="6">
           <v-text-field
-            v-model="password"
-            :rules="passwordRules"
-            label="Contraseña"
-            type="password"
-            required
-          ></v-text-field>
-        </v-col>
-        <v-col cols="12" md="6">
-          <v-text-field
             v-model="phone"
             :rules="phoneRules"
             label="Teléfono"
@@ -41,8 +32,6 @@
             required
           ></v-text-field>
         </v-col>
-      </v-row>
-      <v-row>
         <v-col cols="12" md="6">
           <v-text-field
             v-model="identification"
@@ -51,6 +40,8 @@
             required
           ></v-text-field>
         </v-col>
+      </v-row>
+      <v-row>
         <v-col cols="12" md="6">
           <v-select
             v-model="position"
@@ -61,12 +52,22 @@
             :rules="positionRules"
           ></v-select>
         </v-col>
+        <v-col v-if="!userData" cols="12" md="6">
+          <v-text-field
+            v-model="password"
+            :rules="passwordRules"
+            label="Contraseña"
+            type="password"
+            required
+          ></v-text-field>
+        </v-col>
       </v-row>
       <v-row>
-        <v-col cols="12" md="6">
+        <v-col cols="12" md="8"> </v-col>
+        <v-col cols="12" md="2">
           <v-btn @click="gotoUsers()">Cancelar</v-btn>
         </v-col>
-        <v-col cols="12" md="6">
+        <v-col cols="12" md="2">
           <v-btn color="primary" @click="saveUser()" type="submit"
             >Guardar</v-btn
           >
@@ -83,6 +84,7 @@ import { mapState } from "vuex";
 
 export default {
   name: "UserForm",
+  props: ["userData"],
   data: () => ({
     positions: [],
     valid: false,
@@ -158,6 +160,14 @@ export default {
   }),
   computed: mapState(["user"]),
   methods: {
+    setForm() {
+      this.name = this.userData.name;
+      this.email = this.userData.email;
+      this.password = this.userData.password;
+      this.phone = this.userData.phone;
+      this.identification = this.userData.identification;
+      this.position = this.userData.position._id;
+    },
     getPositions() {
       this.axios
         .get(
@@ -165,7 +175,6 @@ export default {
             this.user.session_token
         )
         .then((response) => {
-          console.log("THEN" + response);
           if (response.status === 200) {
             this.positions = response.data;
           }
@@ -184,6 +193,13 @@ export default {
       router.push({ path: "/users" }).catch(() => {});
     },
     saveUser() {
+      if (typeof this.userData !== "undefined") {
+        this.updateUser();
+      } else {
+        this.addUser();
+      }
+    },
+    addUser() {
       let json = {
         name: this.name,
         email: this.email,
@@ -192,7 +208,6 @@ export default {
         identification: this.identification,
         position_id: this.position,
       };
-
       this.axios
         .post(
           "https://api-pwa-building-0e9adbca88d4.herokuapp.com/users?t=" +
@@ -200,26 +215,59 @@ export default {
           json
         )
         .then(() => {
-          toast("El usuario ha sido creado exitosamente", {
-            cardProps: {
-              color: "success",
-              class: "my-toast",
-            },
-          });
-          this.gotoUsers();
+          this.successOperation("creado");
         })
         .catch((error) => {
-          console.log("error" + error);
-          toast(error.response.data, {
-            cardProps: {
-              color: "warning",
-              class: "my-toast",
-            },
-          });
+          this.errorOperation(error);
         });
+    },
+    updateUser() {
+      let json = {
+        _id: this.userData._id,
+        name: this.name,
+        email: this.email,
+        phone: this.phone,
+        identification: this.identification,
+        position_id: this.position,
+      };
+      this.axios
+        .put(
+          "https://api-pwa-building-0e9adbca88d4.herokuapp.com/users/" +
+            json._id +
+            "?t=" +
+            this.user.session_token,
+          json
+        )
+        .then(() => {
+          this.successOperation("actualizado");
+        })
+        .catch((error) => {
+          this.errorOperation(error);
+        });
+    },
+    successOperation(operation) {
+      toast("El usuario ha sido " + operation + " exitosamente", {
+        cardProps: {
+          color: "success",
+          class: "my-toast",
+        },
+      });
+      this.gotoUsers();
+    },
+    errorOperation(error) {
+      console.log("error" + error);
+      toast(error.response.data, {
+        cardProps: {
+          color: "warning",
+          class: "my-toast",
+        },
+      });
     },
   },
   beforeMount() {
+    if (typeof this.userData !== "undefined") {
+      this.setForm();
+    }
     this.getPositions();
   },
 };

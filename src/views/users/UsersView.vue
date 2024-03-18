@@ -26,7 +26,12 @@
           <td>{{ item.identification }}</td>
           <td>{{ item.position?.name }}</td>
           <td>
-            <v-btn class="ma-2" color="indigo" icon="mdi-pencil"></v-btn>
+            <v-btn
+              class="ma-2"
+              color="indigo"
+              icon="mdi-pencil"
+              @click="updateUser(item._id)"
+            ></v-btn>
           </td>
         </tr>
       </tbody>
@@ -50,6 +55,9 @@ export default {
     addUser: function () {
       router.push("/users/add").catch(() => {});
     },
+    updateUser: function (id) {
+      router.push("/users/" + id).catch(() => {});
+    },
     getUsers() {
       this.axios
         .get(
@@ -63,7 +71,6 @@ export default {
           }
         })
         .catch(function (error) {
-          console.log("entrando al catch");
           console.log(error.response);
           toast(error.response.data, {
             cardProps: {
