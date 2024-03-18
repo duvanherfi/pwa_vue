@@ -33,6 +33,12 @@ const routes = [
     name: "client-add",
     component: () => import("../views/clients/AddClientView.vue"),
   },
+  {
+    path: "/client/:id",
+    name: "client-update",
+    props: true,
+    component: () => import("../views/clients/UpdateClientView.vue"),
+  },
 ];
 
 const router = createRouter({

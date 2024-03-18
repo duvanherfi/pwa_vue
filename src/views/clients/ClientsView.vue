@@ -26,7 +26,12 @@
           <td>{{ item.identification }}</td>
           <td>{{ item.type?.name }}</td>
           <td>
-            <v-btn class="ma-2" color="indigo" icon="mdi-pencil"></v-btn>
+            <v-btn
+              class="ma-2"
+              color="indigo"
+              icon="mdi-pencil"
+              @click="updateClient(item._id)"
+            ></v-btn>
           </td>
         </tr>
       </tbody>
@@ -51,7 +56,7 @@ export default {
     addClient: function () {
       router.push("client/add").catch(() => {});
     },
-    updateUser: function (id) {
+    updateClient: function (id) {
       router.push("/client/" + id).catch(() => {});
     },
     getClients() {

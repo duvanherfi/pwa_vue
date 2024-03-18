@@ -14,7 +14,8 @@ export default {
   components: {
     ClientForm,
   },
-};</script>
+};
+</script>
 
 <style>
 h1 {

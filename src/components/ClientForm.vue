@@ -48,16 +48,17 @@
             item-title="name"
             item-value="_id"
             :items="types"
-            label="Tipo de cliente"
+            label="Tipo"
             :rules="typeRules"
           ></v-select>
         </v-col>
       </v-row>
       <v-row>
-        <v-col cols="12" md="6">
+        <v-col cols="12" md="8"> </v-col>
+        <v-col cols="12" md="2">
           <v-btn @click="gotoClients()">Cancelar</v-btn>
         </v-col>
-        <v-col cols="12" md="6">
+        <v-col cols="12" md="2">
           <v-btn color="primary" @click="saveClient()" type="submit"
             >Guardar</v-btn
           >
@@ -74,7 +75,9 @@ import { mapState } from "vuex";
 
 export default {
   name: "ClientForm",
+  props: ["userData"],
   data: () => ({
+    types: [],
     valid: false,
     name: "",
     nameRules: [
@@ -129,18 +132,24 @@ export default {
         return "El Documento no es válido.";
       },
     ],
-    types: [],
     type: "",
     typeRules: [
       (value) => {
         if (value) return true;
 
-        return "El Tipo de persona es requerido.";
+        return "La posición es requerida.";
       },
     ],
   }),
   computed: mapState(["user"]),
   methods: {
+    setForm() {
+      this.name = this.userData.name;
+      this.email = this.userData.email;
+      this.phone = this.userData.phone;
+      this.identification = this.userData.identification;
+      this.type = this.userData.type._id;
+    },
     getTypes() {
       this.axios
         .get(
@@ -148,9 +157,8 @@ export default {
             this.user.session_token
         )
         .then((response) => {
-          console.log("THEN" + response);
           if (response.status === 200) {
-            this.positions = response.data;
+            this.types = response.data;
           }
         })
         .catch(function (error) {
@@ -164,9 +172,16 @@ export default {
         });
     },
     gotoClients() {
-      router.push({ path: "/client" }).catch(() => {});
+      router.push({ path: "/clients" }).catch(() => {});
     },
     saveClient() {
+      if (typeof this.userData !== "undefined") {
+        this.updateClient();
+      } else {
+        this.addClient();
+      }
+    },
+    addClient() {
       let json = {
         name: this.name,
         email: this.email,
@@ -175,7 +190,6 @@ export default {
         identification: this.identification,
         type_id: this.type,
       };
-
       this.axios
         .post(
           "https://api-pwa-building-0e9adbca88d4.herokuapp.com/clients?t=" +
@@ -183,26 +197,59 @@ export default {
           json
         )
         .then(() => {
-          toast("El Cliente ha sido creado exitosamente", {
-            cardProps: {
-              color: "success",
-              class: "my-toast",
-            },
-          });
-          this.gotoUsers();
+          this.successOperation("creado");
         })
         .catch((error) => {
-          console.log("error" + error);
-          toast(error.response.data, {
-            cardProps: {
-              color: "warning",
-              class: "my-toast",
-            },
-          });
+          this.errorOperation(error);
         });
+    },
+    updateClient() {
+      let json = {
+        _id: this.userData._id,
+        name: this.name,
+        email: this.email,
+        phone: this.phone,
+        identification: this.identification,
+        type_id: this.type,
+      };
+      this.axios
+        .put(
+          "https://api-pwa-building-0e9adbca88d4.herokuapp.com/clients/" +
+            json._id +
+            "?t=" +
+            this.user.session_token,
+          json
+        )
+        .then(() => {
+          this.successOperation("actualizado");
+        })
+        .catch((error) => {
+          this.errorOperation(error);
+        });
+    },
+    successOperation(operation) {
+      toast("El usuario ha sido " + operation + " exitosamente", {
+        cardProps: {
+          color: "success",
+          class: "my-toast",
+        },
+      });
+      this.gotoClients();
+    },
+    errorOperation(error) {
+      console.log("error" + error);
+      toast(error.response.data, {
+        cardProps: {
+          color: "warning",
+          class: "my-toast",
+        },
+      });
     },
   },
   beforeMount() {
+    if (typeof this.userData !== "undefined") {
+      this.setForm();
+    }
     this.getTypes();
   },
 };
