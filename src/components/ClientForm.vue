@@ -148,7 +148,7 @@ export default {
       this.email = this.userData.email;
       this.phone = this.userData.phone;
       this.identification = this.userData.identification;
-      this.type = this.userData.type._id;
+      this.type = this.userData?.type?._id;
     },
     getTypes() {
       this.axios
@@ -228,13 +228,13 @@ export default {
         });
     },
     successOperation(operation) {
-      toast("El usuario ha sido " + operation + " exitosamente", {
+      toast("El cliente ha sido " + operation + " exitosamente", {
         cardProps: {
           color: "success",
           class: "my-toast",
         },
       });
-      this.gotoClients();
+      //this.gotoClients();
     },
     errorOperation(error) {
       console.log("error" + error);
