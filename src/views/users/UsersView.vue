@@ -44,7 +44,7 @@
                   v-bind="props"
                   class="ma-2"
                   color="indigo"
-                  icon="mdi-cancel"
+                  icon="mdi-check-bold"
                   @click="changeUserStatus(item)"
                 ></v-btn>
               </template>
@@ -55,7 +55,7 @@
                   v-bind="props"
                   class="ma-2"
                   color="indigo"
-                  icon="mdi-check-bold"
+                  icon="mdi-cancel"
                   @click="changeUserStatus(item)"
                 ></v-btn>
               </template>
