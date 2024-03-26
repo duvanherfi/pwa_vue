@@ -24,8 +24,8 @@ const routes = [
     component: () => import("../views/users/UpdateUserView.vue"),
   },
   {
-    path: "/client",
-    name: "client",
+    path: "/clients",
+    name: "clients",
     component: () => import("../views/clients/ClientsView.vue"),
   },
   {
@@ -38,6 +38,22 @@ const routes = [
     name: "client-update",
     props: true,
     component: () => import("../views/clients/UpdateClientView.vue"),
+  },
+  {
+    path: "/projects",
+    name: "projects",
+    component: () => import("../views/projects/ProjectsView.vue"),
+  },
+  {
+    path: "/projects/add",
+    name: "project-add",
+    component: () => import("../views/projects/AddProjectView.vue"),
+  },
+  {
+    path: "/projects/:id",
+    name: "project-update",
+    props: true,
+    component: () => import("../views/projects/UpdateProjectView.vue"),
   },
 ];
 

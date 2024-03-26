@@ -3,13 +3,18 @@
     <div>
       <h1>Usuarios</h1>
     </div>
-    <div>
-      <v-btn
-        class="add-btn"
-        color="indigo"
-        icon="mdi-plus"
-        @click="addUser()"
-      ></v-btn>
+    <div class="add-btn">
+      <v-tooltip text="Agregar">
+        <template v-slot:activator="{ props }">
+          <v-btn
+            v-bind="props"
+            class="ma-2"
+            color="indigo"
+            icon="mdi-plus"
+            @click="addUser()"
+          ></v-btn>
+        </template>
+      </v-tooltip>
     </div>
     <v-table fixed-header class="styled-table">
       <thead>
@@ -187,16 +192,3 @@ export default {
   },
 };
 </script>
-
-<style>
-h1 {
-  margin: 20px;
-}
-
-.styled-table tbody tr.active-row:hover {
-  font-weight: bold;
-}
-.add-btn {
-  margin: 15px;
-}
-</style>

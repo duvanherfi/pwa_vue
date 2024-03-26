@@ -1,32 +1,32 @@
 <template>
   <v-container>
     <div>
-      <h1>Actualizar Usuario</h1>
+      <h1>Gestionar proyecto</h1>
     </div>
-    <user-form v-if="isDataLoaded" :user-data="userData" />
+    <project-form v-if="isDataLoaded" :project-data="projectData" />
   </v-container>
 </template>
 
 <script>
-import UserForm from "../../components/UserForm";
+import ProjectForm from "../../components/ProjectForm";
 import { toast } from "vuetify-sonner";
 import { mapState } from "vuex";
 
 export default {
   components: {
-    UserForm,
+    ProjectForm,
   },
   props: ["id"],
   data: () => ({
-    userData: {},
+    projectData: {},
     isDataLoaded: false,
   }),
   computed: mapState(["user"]),
   methods: {
-    loadUserData() {
+    loadProjectData() {
       this.axios
         .get(
-          "https://api-pwa-building-0e9adbca88d4.herokuapp.com/users/" +
+          "https://api-pwa-building-0e9adbca88d4.herokuapp.com/projects/" +
             this.id +
             "?t=" +
             this.user.session_token
@@ -34,7 +34,7 @@ export default {
         .then((response) => {
           console.log(response);
           if (response.status === 200) {
-            this.userData = response.data;
+            this.projectData = response.data;
             this.isDataLoaded = true;
           }
         })
@@ -50,7 +50,7 @@ export default {
     },
   },
   beforeMount() {
-    this.loadUserData();
+    this.loadProjectData();
   },
 };
 </script>

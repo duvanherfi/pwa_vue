@@ -19,8 +19,8 @@ export default {
     return {
       items: [
         { title: "Users", icon: "mdi-account-tie", path: "/users" },
-        { title: "Clients", icon: "mdi-account-circle", path: "/client" },
-        { title: "Projects", icon: "mdi-anchor", path: "/project" },
+        { title: "Clients", icon: "mdi-account-circle", path: "/clients" },
+        { title: "Projects", icon: "mdi-anchor", path: "/projects" },
         { title: "Reports", icon: "mdi-chart-bar", path: "/reports" },
       ],
     };
