@@ -38,8 +38,8 @@
                     class="ma-2"
                     color="primary"
                     @click="addTask()"
-                  >
-                    Agregar Tarea</v-btn
+                    :disabled="id === ''"
+                    >Agregar Tarea</v-btn
                   >
                 </template>
               </v-tooltip>
@@ -68,6 +68,7 @@
             <task-form
               :task-data="task"
               :task-index="i"
+              :project-id="id"
               @task-event="cardEventHandler"
             />
           </v-col>
@@ -92,6 +93,7 @@ export default {
   data: () => ({
     loadingProject: false,
     valid: false,
+    id: "",
     name: "",
     nameRules: [
       (value) => {
@@ -106,6 +108,7 @@ export default {
   computed: mapState(["user"]),
   methods: {
     setForm() {
+      this.id = this.projectData._id;
       this.name = this.projectData.name;
       this.tasks = this.projectData.tasks;
     },
@@ -120,7 +123,25 @@ export default {
       this.tasks.unshift(newTask);
     },
     removeTask(index) {
-      this.tasks.splice(index, 1);
+      if (this.tasks[index]._id === "") {
+        this.tasks.splice(index, 1);
+      } else {
+        this.axios
+          .delete(
+            "https://api-pwa-building-0e9adbca88d4.herokuapp.com/projects/" +
+              this.id +
+              "/tasks/" +
+              this.tasks[index]._id +
+              "?t=" +
+              this.user.session_token
+          )
+          .then(() => {
+            this.tasks.splice(index, 1);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
     },
     gotoProjects() {
       router.push({ path: "/projects" }).catch(() => {});
@@ -147,8 +168,8 @@ export default {
             this.user.session_token,
           json
         )
-        .then(() => {
-          this.successOperation("creado");
+        .then((projectResponse) => {
+          this.successOperation("creado", projectResponse);
         })
         .catch((error) => {
           this.errorOperation(error);
@@ -167,15 +188,16 @@ export default {
             this.user.session_token,
           json
         )
-        .then(() => {
-          this.successOperation("actualizado");
+        .then((projectResponse) => {
+          this.successOperation("actualizado", projectResponse);
         })
         .catch((error) => {
           this.errorOperation(error);
         });
     },
-    successOperation(operation) {
+    successOperation(operation, projectResponse) {
       this.loadingProject = false;
+      this.id = projectResponse.data._id;
       toast("El proyecto ha sido " + operation + " exitosamente", {
         cardProps: {
           color: "success",

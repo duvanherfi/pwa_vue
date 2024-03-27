@@ -1,6 +1,6 @@
 <template>
   <v-card>
-    <v-form v-model="valid">
+    <v-form v-model="valid" ref="form">
       <v-container>
         <v-row>
           <v-col cols="12" sm="12" md="12">
@@ -48,7 +48,7 @@ import { mapState } from "vuex";
 
 export default {
   name: "TaskForm",
-  props: ["taskData", "taskIndex"],
+  props: ["taskData", "taskIndex", "projectId"],
   data: () => ({
     valid: false,
     id: "",
@@ -66,6 +66,7 @@ export default {
       },
     ],
     completed: false,
+    add_task_dialog: false,
     description: "",
     descriptionRules: [
       (value) => {
@@ -86,6 +87,7 @@ export default {
       this.id = this.taskData._id;
       this.name = this.taskData.name;
       this.completed = this.taskData.completed;
+      this.add_task_dialog = this.taskData.add_task_dialog;
       this.description = this.taskData.description;
     },
     dataChange() {
@@ -94,9 +96,58 @@ export default {
         name: this.name,
         description: this.description,
         completed: this.completed,
-        add_task_dialog: false,
+        add_task_dialog: this.add_task_dialog,
       };
       this.$emit("task-event", this.taskIndex, data);
+      this.saveTask(data);
+    },
+    saveTask(data) {
+      this.$refs.form.validate();
+      if (!this.valid) {
+        return;
+      }
+      this.loadingTask = true;
+      if (data._id === "") {
+        console.log("AGREGAR");
+        this.addTask(data);
+      } else {
+        console.log("ACTUALIZAR");
+        this.updateTask(data);
+      }
+    },
+    addTask(data) {
+      this.axios
+        .post(
+          "https://api-pwa-building-0e9adbca88d4.herokuapp.com/projects/" +
+            this.projectId +
+            "/tasks?t=" +
+            this.user.session_token,
+          data
+        )
+        .then((taskResponse) => {
+          this.$emit("task-event", this.taskIndex, taskResponse.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    updateTask(data) {
+      this.axios
+        .put(
+          "https://api-pwa-building-0e9adbca88d4.herokuapp.com/projects/" +
+            this.projectId +
+            "/tasks/" +
+            data._id +
+            "?t=" +
+            this.user.session_token,
+          data
+        )
+        .then((taskResponse) => {
+          this.$emit("task-event", this.taskIndex, taskResponse.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
   },
   beforeMount() {
