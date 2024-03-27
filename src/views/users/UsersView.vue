@@ -136,9 +136,9 @@ export default {
     changeUserStatus(user) {
       this.selectedUser = user;
       if (user.active) {
-        this.confirmDialog = "¿Está seguro que desea deshabilitar el usuario?";
+        this.dialogText = "¿Está seguro que desea deshabilitar el usuario?";
       } else {
-        this.confirmDialog = "¿Está seguro que desea habilitar el usuario?";
+        this.dialogText = "¿Está seguro que desea habilitar el usuario?";
       }
       this.confirmDialog = true;
     },
@@ -149,7 +149,7 @@ export default {
         email: this.selectedUser.email,
         phone: this.selectedUser.phone,
         identification: this.selectedUser.identification,
-        active: false,
+        active: !this.selectedUser.active,
         position_id: this.selectedUser._position_id,
       };
       this.axios
@@ -163,7 +163,7 @@ export default {
         .then((userResponse) => {
           this.getUsers();
           let message = "";
-          if (userResponse.active) {
+          if (userResponse.data.active) {
             message = "El usuario ha sido habilitado exitosamente";
           } else {
             message = "El usuario ha sido deshabilitado exitosamente";

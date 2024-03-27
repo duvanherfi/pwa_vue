@@ -1,57 +1,78 @@
 <template>
-  <v-form v-model="valid">
+  <v-form v-model="valid" ref="form">
     <v-container>
       <v-row>
         <v-col cols="6" md="6">
           <v-text-field
             v-model="name"
-            :counter="10"
+            :loading="loadingProject"
             :rules="nameRules"
             label="Nombre de proyecto"
             required
           ></v-text-field>
         </v-col>
         <v-col cols="6" md="6">
-          <v-btn color="primary" @click="addTask()">Agregar Tarea</v-btn>
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col
-          v-for="(task, i) in tasks"
-          :key="task._id"
-          cols="4"
-          md="4"
-          class="task-col"
-        >
-          <v-tooltip text="Eliminar">
+          <v-tooltip text="Guardar">
             <template v-slot:activator="{ props }">
               <v-btn
                 v-bind="props"
-                class="ma-2 rm-button"
-                color="indigo"
-                icon="mdi-close"
-                @click="removeTask(i)"
+                class="ma-2"
+                color="primary"
+                icon="mdi-send"
+                type="submit"
+                @click="saveProject()"
               ></v-btn>
             </template>
           </v-tooltip>
-          <task-form
-            :task-data="task"
-            :task-index="i"
-            @task-event="cardEventHandler"
-          />
         </v-col>
       </v-row>
-      <v-row>
-        <v-col cols="12" md="8"> </v-col>
-        <v-col cols="12" md="2">
-          <v-btn @click="gotoProjects()">Cancelar</v-btn>
-        </v-col>
-        <v-col cols="12" md="2">
-          <v-btn color="primary" @click="saveProject()" type="submit"
-            >Guardar</v-btn
+
+      <v-card elevation="16">
+        <v-row>
+          <v-col cols="12" sm="12" md="12">
+            <v-card-item>
+              <v-tooltip text="Agregar tarea">
+                <template v-slot:activator="{ props }">
+                  <v-btn
+                    v-bind="props"
+                    class="ma-2"
+                    color="primary"
+                    @click="addTask()"
+                  >
+                    Agregar Tarea</v-btn
+                  >
+                </template>
+              </v-tooltip>
+            </v-card-item>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col
+            v-for="(task, i) in tasks"
+            :key="task._id"
+            cols="4"
+            md="4"
+            class="task-col"
           >
-        </v-col>
-      </v-row>
+            <v-tooltip text="Eliminar">
+              <template v-slot:activator="{ props }">
+                <v-btn
+                  v-bind="props"
+                  class="ma-2 rm-button"
+                  color="indigo"
+                  icon="mdi-close"
+                  @click="removeTask(i)"
+                ></v-btn>
+              </template>
+            </v-tooltip>
+            <task-form
+              :task-data="task"
+              :task-index="i"
+              @task-event="cardEventHandler"
+            />
+          </v-col>
+        </v-row>
+      </v-card>
     </v-container>
   </v-form>
 </template>
@@ -69,6 +90,7 @@ export default {
   },
   props: ["projectData"],
   data: () => ({
+    loadingProject: false,
     valid: false,
     name: "",
     nameRules: [
@@ -76,11 +98,6 @@ export default {
         if (value) return true;
 
         return "El nombre es requerido.";
-      },
-      (value) => {
-        if (/^[a-zA-Z\s]*$/.test(value)) return true;
-
-        return "El nombre no es válido.";
       },
     ],
     tasks: [],
@@ -109,6 +126,11 @@ export default {
       router.push({ path: "/projects" }).catch(() => {});
     },
     saveProject() {
+      this.$refs.form.validate();
+      if (!this.valid) {
+        return;
+      }
+      this.loadingProject = true;
       if (typeof this.projectData !== "undefined") {
         this.updateProject();
       } else {
@@ -153,6 +175,7 @@ export default {
         });
     },
     successOperation(operation) {
+      this.loadingProject = false;
       toast("El proyecto ha sido " + operation + " exitosamente", {
         cardProps: {
           color: "success",
@@ -161,6 +184,7 @@ export default {
       });
     },
     errorOperation(error) {
+      this.loadingProject = false;
       console.log("error" + error);
       toast(error.response.data, {
         cardProps: {
