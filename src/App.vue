@@ -23,3 +23,18 @@ export default {
   },
 };
 </script>
+
+<style>
+h1 {
+  margin: 20px;
+  text-align: center;
+}
+
+.styled-table tbody tr.active-row:hover {
+  font-weight: bold;
+}
+.add-btn {
+  margin: 15px;
+  text-align: right;
+}
+</style>

@@ -3,13 +3,18 @@
     <div>
       <h1>Usuarios</h1>
     </div>
-    <div>
-      <v-btn
-        class="add-btn"
-        color="indigo"
-        icon="mdi-plus"
-        @click="addUser()"
-      ></v-btn>
+    <div class="add-btn">
+      <v-tooltip text="Agregar">
+        <template v-slot:activator="{ props }">
+          <v-btn
+            v-bind="props"
+            class="ma-2"
+            color="indigo"
+            icon="mdi-plus"
+            @click="addUser()"
+          ></v-btn>
+        </template>
+      </v-tooltip>
     </div>
     <v-table fixed-header class="styled-table">
       <thead>
@@ -131,9 +136,9 @@ export default {
     changeUserStatus(user) {
       this.selectedUser = user;
       if (user.active) {
-        this.confirmDialog = "¿Está seguro que desea deshabilitar el usuario?";
+        this.dialogText = "¿Está seguro que desea deshabilitar el usuario?";
       } else {
-        this.confirmDialog = "¿Está seguro que desea habilitar el usuario?";
+        this.dialogText = "¿Está seguro que desea habilitar el usuario?";
       }
       this.confirmDialog = true;
     },
@@ -144,7 +149,7 @@ export default {
         email: this.selectedUser.email,
         phone: this.selectedUser.phone,
         identification: this.selectedUser.identification,
-        active: false,
+        active: !this.selectedUser.active,
         position_id: this.selectedUser._position_id,
       };
       this.axios
@@ -158,7 +163,7 @@ export default {
         .then((userResponse) => {
           this.getUsers();
           let message = "";
-          if (userResponse.active) {
+          if (userResponse.data.active) {
             message = "El usuario ha sido habilitado exitosamente";
           } else {
             message = "El usuario ha sido deshabilitado exitosamente";
@@ -187,16 +192,3 @@ export default {
   },
 };
 </script>
-
-<style>
-h1 {
-  margin: 20px;
-}
-
-.styled-table tbody tr.active-row:hover {
-  font-weight: bold;
-}
-.add-btn {
-  margin: 15px;
-}
-</style>

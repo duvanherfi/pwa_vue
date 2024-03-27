@@ -1,18 +1,18 @@
 <template>
   <v-container>
     <div>
-      <h1>Registrar Cliente</h1>
+      <h1>Agregar Proyecto</h1>
     </div>
-    <client-form />
+    <project-form />
   </v-container>
 </template>
 
 <script>
-import ClientForm from "../../components/ClientForm";
+import ProjectForm from "../../components/ProjectForm";
 
 export default {
   components: {
-    ClientForm,
+    ProjectForm,
   },
 };
 </script>
