@@ -1,0 +1,44 @@
+# This is a sample build configuration for Docker.
+# Check our guides at https://confluence.atlassian.com/x/O1toN for more examples.
+# Only use spaces to indent your .yml configuration.
+# -----
+# You can specify a custom docker image from Docker Hub as your build environment.
+#empty
+image:
+  name: atlassian/default-image:3
+definitions:
+  steps:
+    - step: &deploy-heroku
+        name: Docker image with assets
+        trigger: manual
+        pipe: atlassian/heroku-deploy:2.4.0
+        variables:
+          HEROKU_API_KEY: '7d0505aa-39f8-4699-9ad4-3ddaaefd8c10'
+          HEROKU_APP_NAME: 'front-pwa-buidling'
+          ACTION: 'deploy' # Optional. 'update' or 'deploy' # Default 'deploy'.
+          ZIP_FILE: 'deploy' # Optional. 'ACTION' 'deploy' specific.
+          # WAIT: '<boolean>' # Optional. 'ACTION' 'deploy' specific # Default: 'false'.
+          # CONFIG_VARS: '<json>' # Optional. 'ACTION' 'update' specific.
+          # DEBUG: '<boolean>' # Optional. # Default: 'false'.
+pipelines:
+
+  branches:
+    main:
+      - step:
+          name: Start pipeline
+          clone:
+            enabled: false
+          script:
+            - echo "Starting pipeline"
+      - step: *deploy-heroku
+    release/*:
+      - step:
+          name: Start pipeline
+          clone:
+            enabled: false
+          script:
+            - echo "Starting pipeline"
+      - step: *deploy-heroku
+
+
+
