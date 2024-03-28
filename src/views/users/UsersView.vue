@@ -159,7 +159,7 @@ export default {
           "https://api-pwa-building-0e9adbca88d4.herokuapp.com/users/" +
             this.selectedUser._id +
             "?t=" +
-            this.user.session_token,
+            this.sessionToken,
           json
         )
         .then((userResponse) => {
