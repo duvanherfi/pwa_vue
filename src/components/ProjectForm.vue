@@ -50,8 +50,8 @@
           <v-col
             v-for="(task, i) in tasks"
             :key="task._id"
-            cols="4"
-            md="4"
+            cols="6"
+            md="6"
             class="task-col"
           >
             <v-tooltip text="Eliminar">
