@@ -130,7 +130,7 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapGetters } from "vuex";
 
 export default {
   name: "TaskForm",
@@ -159,7 +159,9 @@ export default {
     images: [],
     audios: [],
   }),
-  computed: mapState(["user"]),
+  computed: {
+    ...mapGetters(["sessionToken"]),
+  },
   methods: {
     setForm() {
       this.id = this.taskData._id;
@@ -193,7 +195,7 @@ export default {
           "https://api-pwa-building-0e9adbca88d4.herokuapp.com/projects/" +
             this.projectId +
             "/tasks?t=" +
-            this.user.session_token,
+            this.sessionToken,
           data
         )
         .then((taskResponse) => {
@@ -211,7 +213,7 @@ export default {
             "/tasks/" +
             data._id +
             "?t=" +
-            this.user.session_token,
+            this.sessionToken,
           data
         )
         .then((taskResponse) => {
