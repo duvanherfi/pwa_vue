@@ -38,6 +38,92 @@
             ></v-textarea>
           </v-col>
         </v-row>
+        <v-row>
+          <v-col cols="6" md="6">
+            <v-card-text>Imágenes:</v-card-text>
+          </v-col>
+          <v-col cols="6" md="6">
+            <v-file-input
+              label="Añadir imagen"
+              outlined
+              dense
+              small-ships
+              @change="uploadImage($event)"
+            >
+            </v-file-input>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col
+            cols="6"
+            md="6"
+            v-for="(image, i) in images"
+            :key="i"
+            class="media-col"
+          >
+            <v-img
+              :src="
+                'https://api-pwa-building-0e9adbca88d4.herokuapp.com/' +
+                image.url
+              "
+            >
+            </v-img>
+            <v-tooltip text="Eliminar imagen">
+              <template v-slot:activator="{ props }">
+                <v-btn
+                  v-bind="props"
+                  class="ma-2 rm-media-button"
+                  color="red"
+                  icon="mdi-close"
+                  @click="deleteImage(image._id, i)"
+                ></v-btn>
+              </template>
+            </v-tooltip>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col cols="6" md="6">
+            <v-card-text>Audios:</v-card-text>
+          </v-col>
+          <v-col cols="6" md="6">
+            <v-file-input
+              label="Añadir audio"
+              outlined
+              dense
+              small-ships
+              @change="uploadAudio($event)"
+            >
+            </v-file-input>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col
+            cols="6"
+            md="6"
+            v-for="(audio, i) in audios"
+            :key="i"
+            class="media-col"
+          >
+            <audio
+              controls
+              :src="
+                'https://api-pwa-building-0e9adbca88d4.herokuapp.com/' +
+                audio.url
+              "
+            ></audio>
+            <v-tooltip text="Eliminar audio">
+              <template v-slot:activator="{ props }">
+                <v-btn
+                  v-bind="props"
+                  class="ma-2 rm-media-button"
+                  color="red"
+                  icon="mdi-close"
+                  @click="deleteAudio(audio._id, i)"
+                ></v-btn>
+              </template>
+            </v-tooltip>
+          </v-col>
+        </v-row>
       </v-container>
     </v-form>
   </v-card>
@@ -59,11 +145,6 @@ export default {
 
         return "El nombre es requerido.";
       },
-      (value) => {
-        if (/^[a-zA-Z\s]*$/.test(value)) return true;
-
-        return "El nombre no es válido.";
-      },
     ],
     completed: false,
     add_task_dialog: false,
@@ -74,12 +155,9 @@ export default {
 
         return "La descripción es requerida.";
       },
-      (value) => {
-        if (/^[a-zA-Z\s]*$/.test(value)) return true;
-
-        return "La descripción no es válida.";
-      },
     ],
+    images: [],
+    audios: [],
   }),
   computed: mapState(["user"]),
   methods: {
@@ -89,15 +167,11 @@ export default {
       this.completed = this.taskData.completed;
       this.add_task_dialog = this.taskData.add_task_dialog;
       this.description = this.taskData.description;
+      this.images = this.taskData.images;
+      this.audios = this.taskData.audios;
     },
     dataChange() {
-      let data = {
-        _id: this.id,
-        name: this.name,
-        description: this.description,
-        completed: this.completed,
-        add_task_dialog: this.add_task_dialog,
-      };
+      let data = this.getTaskInfo();
       this.$emit("task-event", this.taskIndex, data);
       this.saveTask(data);
     },
@@ -108,10 +182,8 @@ export default {
       }
       this.loadingTask = true;
       if (data._id === "") {
-        console.log("AGREGAR");
         this.addTask(data);
       } else {
-        console.log("ACTUALIZAR");
         this.updateTask(data);
       }
     },
@@ -149,6 +221,111 @@ export default {
           console.log(error);
         });
     },
+    uploadImage(event) {
+      let selectedFile = event.target.files[0];
+      const fd = new FormData();
+      fd.append("image[file]", selectedFile, selectedFile.name);
+      this.axios
+        .post(
+          "https://api-pwa-building-0e9adbca88d4.herokuapp.com/projects/" +
+            this.projectId +
+            "/tasks/" +
+            this.id +
+            "/images?t=" +
+            this.user.session_token,
+          fd
+        )
+        .then((imageResponse) => {
+          console.log("imageResponse");
+          console.log(imageResponse);
+          this.images.push({
+            _id: imageResponse.data._id,
+            url: imageResponse.data.url,
+          });
+          this.$emit("task-event", this.taskIndex, this.getTaskInfo());
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    deleteImage(imageId, index) {
+      this.axios
+        .delete(
+          "https://api-pwa-building-0e9adbca88d4.herokuapp.com/projects/" +
+            this.projectId +
+            "/tasks/" +
+            this.id +
+            "/images/" +
+            imageId +
+            "?t=" +
+            this.user.session_token
+        )
+        .then(() => {
+          this.images.splice(index, 1);
+          this.$emit("task-event", this.taskIndex, this.getTaskInfo());
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    uploadAudio(event) {
+      let selectedFile = event.target.files[0];
+      const fd = new FormData();
+      fd.append("image[file]", selectedFile, selectedFile.name);
+      this.axios
+        .post(
+          "https://api-pwa-building-0e9adbca88d4.herokuapp.com/projects/" +
+            this.projectId +
+            "/tasks/" +
+            this.id +
+            "/audios?t=" +
+            this.user.session_token,
+          fd
+        )
+        .then((audioResponse) => {
+          console.log("audioResponse");
+          console.log(audioResponse);
+          this.audios.push({
+            _id: audioResponse.data._id,
+            url: audioResponse.data.url,
+          });
+          this.$emit("task-event", this.taskIndex, this.getTaskInfo());
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    deleteAudio(audioId, index) {
+      this.axios
+        .delete(
+          "https://api-pwa-building-0e9adbca88d4.herokuapp.com/projects/" +
+            this.projectId +
+            "/tasks/" +
+            this.id +
+            "/audios/" +
+            audioId +
+            "?t=" +
+            this.user.session_token
+        )
+        .then(() => {
+          this.audios.splice(index, 1);
+          this.$emit("task-event", this.taskIndex, this.getTaskInfo());
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    getTaskInfo() {
+      return {
+        _id: this.id,
+        name: this.name,
+        description: this.description,
+        completed: this.completed,
+        add_task_dialog: this.add_task_dialog,
+        images: this.images,
+        audios: this.audios,
+      };
+    },
   },
   beforeMount() {
     if (typeof this.taskData !== "undefined") {
@@ -161,5 +338,14 @@ export default {
 <style>
 .container {
   max-width: 700px;
+}
+.rm-media-button {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  z-index: 1;
+}
+.media-col {
+  position: relative;
 }
 </style>
