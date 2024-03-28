@@ -71,7 +71,7 @@
 <script>
 import router from "@/router";
 import { toast } from "vuetify-sonner";
-import { mapState } from "vuex";
+import { mapGetters } from "vuex";
 
 export default {
   name: "ClientForm",
@@ -141,7 +141,9 @@ export default {
       },
     ],
   }),
-  computed: mapState(["user"]),
+  computed: {
+    ...mapGetters(["sessionToken"]),
+  },
   methods: {
     setForm() {
       this.name = this.userData.name;
@@ -154,7 +156,7 @@ export default {
       this.axios
         .get(
           "https://api-pwa-building-0e9adbca88d4.herokuapp.com/types?t=" +
-            this.user.session_token
+            this.sessionToken
         )
         .then((response) => {
           if (response.status === 200) {
@@ -193,11 +195,12 @@ export default {
       this.axios
         .post(
           "https://api-pwa-building-0e9adbca88d4.herokuapp.com/clients?t=" +
-            this.user.session_token,
+            this.sessionToken,
           json
         )
         .then(() => {
           this.successOperation("creado");
+          this.gotoClients();
         })
         .catch((error) => {
           this.errorOperation(error);
@@ -217,10 +220,15 @@ export default {
           "https://api-pwa-building-0e9adbca88d4.herokuapp.com/clients/" +
             json._id +
             "?t=" +
-            this.user.session_token,
+            this.sessionToken,
           json
         )
-        .then(() => {
+        .then((response) => {
+          this.name = response.data.name;
+          this.email = response.data.email;
+          this.phone = response.data.phone;
+          this.identification = response.data.identification;
+          this.type = response.data?.type?._id;
           this.successOperation("actualizado");
         })
         .catch((error) => {
@@ -234,7 +242,6 @@ export default {
           class: "my-toast",
         },
       });
-      //this.gotoClients();
     },
     errorOperation(error) {
       console.log("error" + error);

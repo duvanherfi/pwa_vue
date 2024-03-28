@@ -44,7 +44,7 @@
       <v-row>
         <v-col cols="12" md="6">
           <v-select
-            v-model="position"
+            v-model="position_id"
             item-title="name"
             item-value="_id"
             :items="positions"
@@ -80,7 +80,7 @@
 <script>
 import router from "@/router";
 import { toast } from "vuetify-sonner";
-import { mapState } from "vuex";
+import { mapGetters } from "vuex";
 
 export default {
   name: "UserForm",
@@ -149,7 +149,7 @@ export default {
         return "El Documento no es válido.";
       },
     ],
-    position: "",
+    position_id: "",
     positionRules: [
       (value) => {
         if (value) return true;
@@ -158,7 +158,9 @@ export default {
       },
     ],
   }),
-  computed: mapState(["user"]),
+  computed: {
+    ...mapGetters(["sessionToken"]),
+  },
   methods: {
     setForm() {
       this.name = this.userData.name;
@@ -166,13 +168,13 @@ export default {
       this.password = this.userData.password;
       this.phone = this.userData.phone;
       this.identification = this.userData.identification;
-      this.position = this.userData.position._id;
+      this.position_id = this.userData.position._id;
     },
     getPositions() {
       this.axios
         .get(
           "https://api-pwa-building-0e9adbca88d4.herokuapp.com/positions?t=" +
-            this.user.session_token
+            this.sessionToken
         )
         .then((response) => {
           if (response.status === 200) {
@@ -206,15 +208,16 @@ export default {
         password: this.password,
         phone: this.phone,
         identification: this.identification,
-        position_id: this.position,
+        position_id: this.position_id,
       };
       this.axios
         .post(
           "https://api-pwa-building-0e9adbca88d4.herokuapp.com/users?t=" +
-            this.user.session_token,
+            this.sessionToken,
           json
         )
         .then(() => {
+          this.gotoUsers();
           this.successOperation("creado");
         })
         .catch((error) => {
@@ -228,17 +231,22 @@ export default {
         email: this.email,
         phone: this.phone,
         identification: this.identification,
-        position_id: this.position,
+        position_id: this.position_id,
       };
       this.axios
         .put(
           "https://api-pwa-building-0e9adbca88d4.herokuapp.com/users/" +
             json._id +
             "?t=" +
-            this.user.session_token,
+            this.sessionToken,
           json
         )
-        .then(() => {
+        .then((response) => {
+          this.name = response.data.name;
+          this.email = response.data.email;
+          this.phone = response.data.phone;
+          this.identification = response.data.identification;
+          this.position_id = response.data?.position?._id;
           this.successOperation("actualizado");
         })
         .catch((error) => {

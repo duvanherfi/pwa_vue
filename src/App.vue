@@ -1,7 +1,7 @@
 <template>
   <div>
-    <layout v-if="currentUser != null"></layout>
-    <login v-if="currentUser === null"></login>
+    <layout v-if="sessionToken != null"></layout>
+    <login v-if="sessionToken === null"></login>
     <VSonner position="top-center" expand />
   </div>
 </template>
@@ -19,7 +19,7 @@ export default {
     VSonner,
   },
   computed: {
-    ...mapGetters(["currentUser"]),
+    ...mapGetters(["sessionToken"]),
   },
 };
 </script>
