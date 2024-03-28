@@ -82,7 +82,7 @@
 import TaskForm from "./TaskForm.vue";
 import router from "@/router";
 import { toast } from "vuetify-sonner";
-import { mapState } from "vuex";
+import { mapGetters } from "vuex";
 
 export default {
   name: "ProjectForm",
@@ -105,7 +105,9 @@ export default {
     tasks: [],
     tempTaskIdCounter: 0,
   }),
-  computed: mapState(["user"]),
+  computed: {
+    ...mapGetters(["sessionToken"]),
+  },
   methods: {
     setForm() {
       this.id = this.projectData._id;
@@ -133,7 +135,7 @@ export default {
               "/tasks/" +
               this.tasks[index]._id +
               "?t=" +
-              this.user.session_token
+              this.sessionToken
           )
           .then(() => {
             this.tasks.splice(index, 1);
@@ -165,7 +167,7 @@ export default {
       this.axios
         .post(
           "https://api-pwa-building-0e9adbca88d4.herokuapp.com/projects?t=" +
-            this.user.session_token,
+            this.sessionToken,
           json
         )
         .then((projectResponse) => {
@@ -185,7 +187,7 @@ export default {
           "https://api-pwa-building-0e9adbca88d4.herokuapp.com/projects/" +
             json._id +
             "?t=" +
-            this.user.session_token,
+            this.sessionToken,
           json
         )
         .then((projectResponse) => {

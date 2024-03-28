@@ -10,7 +10,7 @@
 <script>
 import ProjectForm from "../../components/ProjectForm";
 import { toast } from "vuetify-sonner";
-import { mapState } from "vuex";
+import { mapGetters } from "vuex";
 
 export default {
   components: {
@@ -21,7 +21,9 @@ export default {
     projectData: {},
     isDataLoaded: false,
   }),
-  computed: mapState(["user"]),
+  computed: {
+    ...mapGetters(["sessionToken"]),
+  },
   methods: {
     loadProjectData() {
       this.axios
@@ -29,7 +31,7 @@ export default {
           "https://api-pwa-building-0e9adbca88d4.herokuapp.com/projects/" +
             this.id +
             "?t=" +
-            this.user.session_token
+            this.sessionToken
         )
         .then((response) => {
           console.log(response);
