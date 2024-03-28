@@ -44,10 +44,12 @@
           </v-col>
           <v-col cols="6" md="6">
             <v-file-input
+              ref="imageupload"
               label="Añadir imagen"
               outlined
               dense
               small-ships
+              accept="image/*"
               @change="uploadImage($event)"
             >
             </v-file-input>
@@ -87,10 +89,12 @@
           </v-col>
           <v-col cols="6" md="6">
             <v-file-input
+              ref="audioupload"
               label="Añadir audio"
               outlined
               dense
               small-ships
+              accept=".mp3,.mp4,.wav,.aac,.wma"
               @change="uploadAudio($event)"
             >
             </v-file-input>
@@ -234,17 +238,16 @@ export default {
             "/tasks/" +
             this.id +
             "/images?t=" +
-            this.user.session_token,
+            this.sessionToken,
           fd
         )
         .then((imageResponse) => {
-          console.log("imageResponse");
-          console.log(imageResponse);
           this.images.push({
             _id: imageResponse.data._id,
             url: imageResponse.data.url,
           });
           this.$emit("task-event", this.taskIndex, this.getTaskInfo());
+          this.$refs.imageupload.reset();
         })
         .catch((error) => {
           console.log(error);
@@ -260,7 +263,7 @@ export default {
             "/images/" +
             imageId +
             "?t=" +
-            this.user.session_token
+            this.sessionToken
         )
         .then(() => {
           this.images.splice(index, 1);
@@ -273,7 +276,7 @@ export default {
     uploadAudio(event) {
       let selectedFile = event.target.files[0];
       const fd = new FormData();
-      fd.append("image[file]", selectedFile, selectedFile.name);
+      fd.append("audio[file]", selectedFile, selectedFile.name);
       this.axios
         .post(
           "https://api-pwa-building-0e9adbca88d4.herokuapp.com/projects/" +
@@ -281,16 +284,15 @@ export default {
             "/tasks/" +
             this.id +
             "/audios?t=" +
-            this.user.session_token,
+            this.sessionToken,
           fd
         )
         .then((audioResponse) => {
-          console.log("audioResponse");
-          console.log(audioResponse);
           this.audios.push({
             _id: audioResponse.data._id,
             url: audioResponse.data.url,
           });
+          this.$refs.audioupload.reset();
           this.$emit("task-event", this.taskIndex, this.getTaskInfo());
         })
         .catch((error) => {
@@ -307,7 +309,7 @@ export default {
             "/audios/" +
             audioId +
             "?t=" +
-            this.user.session_token
+            this.sessionToken
         )
         .then(() => {
           this.audios.splice(index, 1);
