@@ -90,7 +90,7 @@
 <script>
 import router from "@/router";
 import { toast } from "vuetify-sonner";
-import { mapState } from "vuex";
+import { mapGetters } from "vuex";
 
 export default {
   data() {
@@ -101,7 +101,9 @@ export default {
       dialogText: "",
     };
   },
-  computed: mapState(["user"]),
+  computed: {
+    ...mapGetters(["sessionToken"]),
+  },
   methods: {
     addUser: function () {
       router.push("/users/add").catch(() => {});
@@ -113,7 +115,7 @@ export default {
       this.axios
         .get(
           "https://api-pwa-building-0e9adbca88d4.herokuapp.com/users?t=" +
-            this.user.session_token
+            this.sessionToken
         )
         .then((response) => {
           console.log(response);

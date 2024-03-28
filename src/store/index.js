@@ -2,16 +2,17 @@ import { createStore } from "vuex";
 
 export default createStore({
   state: {
-    user: null,
+    sessionToken: sessionStorage.getItem("sessionToken") || null,
   },
   getters: {
-    currentUser: (state) => {
-      return state.user;
+    sessionToken: (state) => {
+      return state.sessionToken;
     },
   },
   mutations: {
-    setUser: (state, user) => {
-      state.user = user;
+    setSessionToken: (state, sessionToken) => {
+      state.sessionToken = sessionToken;
+      sessionStorage.setItem("sessionToken", sessionToken);
     },
   },
   actions: {},

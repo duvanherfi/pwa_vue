@@ -46,7 +46,7 @@ export default {
   },
   methods: {
     ...mapMutations([
-      "setUser", // map `this.setUser(user)` to `this.$store.commit('setUser', user)`
+      "setSessionToken", // map `this.setUser(user)` to `this.$store.commit('setUser', user)`
     ]),
     login() {
       let json = {
@@ -58,7 +58,7 @@ export default {
         .then((response) => {
           console.log(response);
           if (response.status === 200) {
-            this.setUser(response.data);
+            this.setSessionToken(response.data.session_token);
             this.$router.push("/users");
           }
         })
