@@ -135,6 +135,7 @@
 
 <script>
 import { mapGetters } from "vuex";
+import { toast } from "vuetify-sonner";
 
 export default {
   name: "TaskForm",
@@ -206,7 +207,7 @@ export default {
           this.$emit("task-event", this.taskIndex, taskResponse.data);
         })
         .catch((error) => {
-          console.log(error);
+          this.errorOperation(error);
         });
     },
     updateTask(data) {
@@ -224,7 +225,7 @@ export default {
           this.$emit("task-event", this.taskIndex, taskResponse.data);
         })
         .catch((error) => {
-          console.log(error);
+          this.errorOperation(error);
         });
     },
     uploadImage(event) {
@@ -250,7 +251,7 @@ export default {
           this.$refs.imageupload.reset();
         })
         .catch((error) => {
-          console.log(error);
+          this.errorOperation(error);
         });
     },
     deleteImage(imageId, index) {
@@ -270,7 +271,7 @@ export default {
           this.$emit("task-event", this.taskIndex, this.getTaskInfo());
         })
         .catch((error) => {
-          console.log(error);
+          this.errorOperation(error);
         });
     },
     uploadAudio(event) {
@@ -296,7 +297,7 @@ export default {
           this.$emit("task-event", this.taskIndex, this.getTaskInfo());
         })
         .catch((error) => {
-          console.log(error);
+          this.errorOperation(error);
         });
     },
     deleteAudio(audioId, index) {
@@ -316,7 +317,7 @@ export default {
           this.$emit("task-event", this.taskIndex, this.getTaskInfo());
         })
         .catch((error) => {
-          console.log(error);
+          this.errorOperation(error);
         });
     },
     getTaskInfo() {
@@ -329,6 +330,15 @@ export default {
         images: this.images,
         audios: this.audios,
       };
+    },
+    errorOperation(error) {
+      console.log(error);
+      toast(error.response.data, {
+        cardProps: {
+          color: "warning",
+          class: "my-toast",
+        },
+      });
     },
   },
   beforeMount() {

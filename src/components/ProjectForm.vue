@@ -141,7 +141,7 @@ export default {
             this.tasks.splice(index, 1);
           })
           .catch((error) => {
-            console.log(error);
+            this.errorOperation(error);
           });
       }
     },
