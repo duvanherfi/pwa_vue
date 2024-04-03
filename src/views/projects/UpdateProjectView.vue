@@ -1,34 +1,34 @@
 <template>
   <v-container>
     <div>
-      <h1>Actualizar Cliente</h1>
+      <h1>Gestionar proyecto</h1>
     </div>
-    <client-form v-if="isDataLoaded" :user-data="userData" />
+    <project-form v-if="isDataLoaded" :project-data="projectData" />
   </v-container>
 </template>
 
 <script>
-import ClientForm from "../../components/ClientForm";
+import ProjectForm from "../../components/ProjectForm";
 import { toast } from "vuetify-sonner";
 import { mapGetters } from "vuex";
 
 export default {
   components: {
-    ClientForm,
+    ProjectForm,
   },
   props: ["id"],
   data: () => ({
-    userData: {},
+    projectData: {},
     isDataLoaded: false,
   }),
   computed: {
     ...mapGetters(["sessionToken"]),
   },
   methods: {
-    loadClientData() {
+    loadProjectData() {
       this.axios
         .get(
-          "https://api-pwa-building-0e9adbca88d4.herokuapp.com/clients/" +
+          "https://api-pwa-building-0e9adbca88d4.herokuapp.com/projects/" +
             this.id +
             "?t=" +
             this.sessionToken
@@ -36,7 +36,7 @@ export default {
         .then((response) => {
           console.log(response);
           if (response.status === 200) {
-            this.userData = response.data;
+            this.projectData = response.data;
             this.isDataLoaded = true;
           }
         })
@@ -52,7 +52,7 @@ export default {
     },
   },
   beforeMount() {
-    this.loadClientData();
+    this.loadProjectData();
   },
 };
 </script>

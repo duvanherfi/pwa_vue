@@ -282,10 +282,6 @@ export default {
 </script>
 
 <style>
-h1 {
-  margin: 20px;
-}
-
 .container {
   max-width: 700px;
 }
