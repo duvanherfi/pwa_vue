@@ -55,6 +55,11 @@ const routes = [
     props: true,
     component: () => import("../views/projects/UpdateProjectView.vue"),
   },
+  {
+    path: "/reports",
+    name: "reports",
+    component: () => import("../views/reports/ReportsView.vue"),
+  },
 ];
 
 const router = createRouter({
