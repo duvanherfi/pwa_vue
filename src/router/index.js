@@ -1,11 +1,22 @@
 import { createRouter, createWebHashHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
+import { toast } from "vuetify-sonner";
 
 const routes = [
   {
     path: "/",
     name: "home",
     component: HomeView,
+  },
+  {
+    path: "/home",
+    name: "home",
+    component: HomeView,
+  },
+  {
+    path: "/login",
+    name: "login",
+    component: () => import("../views/Login.vue"),
   },
   {
     path: "/users",
@@ -65,6 +76,42 @@ const routes = [
 const router = createRouter({
   history: createWebHashHistory(),
   routes,
+});
+
+router.beforeEach((to) => {
+  const isAuthenticated = sessionStorage.getItem("sessionToken") != "";
+  if (!isAuthenticated && to.name !== "login") {
+    return { name: "login" };
+  }
+
+  const positionId = sessionStorage.getItem("positionId");
+
+  if (
+    positionId === "65f5dde3adca8f2c313447b9" ||
+    positionId === "65f5dde3adca8f2c313447b8"
+  ) {
+    // Arquitecto - Obrero
+    if (to.name != "login" && to.name != "home" && to.name != "projects") {
+      toast("No tiene acceso al módulo que intentas ingresar", {
+        cardProps: {
+          color: "warning",
+          class: "my-toast",
+        },
+      });
+      return false;
+    }
+  } else if (positionId === "65f5dde3adca8f2c313447b7") {
+    // Administrador
+    if (to.name != "login" && to.name != "reports" && to.name != "clients") {
+      toast("No tiene acceso al módulo que intentas ingresar", {
+        cardProps: {
+          color: "warning",
+          class: "my-toast",
+        },
+      });
+      return false;
+    }
+  }
 });
 
 export default router;
