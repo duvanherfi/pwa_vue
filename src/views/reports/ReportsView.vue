@@ -49,7 +49,6 @@
 <script>
 import BarChart from "@/components/BarChart";
 import PieChart from "@/components/PieChart";
-import { toast } from "vuetify-sonner";
 import { mapGetters } from "vuex";
 export default {
   data: () => {
@@ -86,15 +85,7 @@ export default {
             this.projectList = response.data;
           }
         })
-        .catch(function (error) {
-          console.log(error.response);
-          toast(error.response.data, {
-            cardProps: {
-              color: "warning",
-              class: "my-toast",
-            },
-          });
-        });
+        .catch(() => {});
     },
     getPositionsReport() {
       this.axios
@@ -109,15 +100,7 @@ export default {
             this.isDataForUsersLoaded = true;
           }
         })
-        .catch(function (error) {
-          console.log(error.response);
-          toast(error.response.data, {
-            cardProps: {
-              color: "warning",
-              class: "my-toast",
-            },
-          });
-        });
+        .catch(() => {});
     },
     getRolesReport() {
       this.axios
@@ -132,15 +115,7 @@ export default {
             this.isDataForClientsLoaded = true;
           }
         })
-        .catch(function (error) {
-          console.log(error.response);
-          toast(error.response.data, {
-            cardProps: {
-              color: "warning",
-              class: "my-toast",
-            },
-          });
-        });
+        .catch(() => {});
     },
     getTasksReport() {
       this.axios
@@ -157,15 +132,7 @@ export default {
             this.isDataForProjectsLoaded = true;
           }
         })
-        .catch(function (error) {
-          console.log(error.response);
-          toast(error.response.data, {
-            cardProps: {
-              color: "warning",
-              class: "my-toast",
-            },
-          });
-        });
+        .catch(() => {});
     },
     dataChange() {
       this.isDataForProjectsLoaded = false;

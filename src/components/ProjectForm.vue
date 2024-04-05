@@ -140,9 +140,7 @@ export default {
           .then(() => {
             this.tasks.splice(index, 1);
           })
-          .catch((error) => {
-            this.errorOperation(error);
-          });
+          .catch(() => {});
       }
     },
     gotoProjects() {
@@ -173,8 +171,8 @@ export default {
         .then((projectResponse) => {
           this.successOperation("creado", projectResponse);
         })
-        .catch((error) => {
-          this.errorOperation(error);
+        .catch(() => {
+          this.errorOperation();
         });
     },
     updateProject() {
@@ -193,8 +191,8 @@ export default {
         .then((projectResponse) => {
           this.successOperation("actualizado", projectResponse);
         })
-        .catch((error) => {
-          this.errorOperation(error);
+        .catch(() => {
+          this.errorOperation();
         });
     },
     successOperation(operation, projectResponse) {
@@ -207,15 +205,8 @@ export default {
         },
       });
     },
-    errorOperation(error) {
+    errorOperation() {
       this.loadingProject = false;
-      console.log("error" + error);
-      toast(error.response.data, {
-        cardProps: {
-          color: "warning",
-          class: "my-toast",
-        },
-      });
     },
     cardEventHandler(index, data) {
       this.tasks[index] = data;

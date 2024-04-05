@@ -46,7 +46,6 @@
 
 <script>
 import router from "@/router";
-import { toast } from "vuetify-sonner";
 import { mapGetters } from "vuex";
 
 export default {
@@ -78,16 +77,7 @@ export default {
             this.clients = response.data;
           }
         })
-        .catch(function (error) {
-          console.log("entrando al catch");
-          console.log(error.response);
-          toast(error.response.data, {
-            cardProps: {
-              color: "warning",
-              class: "my-toast",
-            },
-          });
-        });
+        .catch(() => {});
     },
   },
   beforeMount() {

@@ -97,7 +97,6 @@ export default {
     return {
       confirmDialog: false,
       users: [],
-      loading: true,
       dialogText: "",
     };
   },
@@ -122,18 +121,8 @@ export default {
           if (response.status === 200) {
             this.users = response.data;
           }
-          this.loading = false;
         })
-        .catch(function (error) {
-          console.log(error.response);
-          toast(error.response.data, {
-            cardProps: {
-              color: "warning",
-              class: "my-toast",
-            },
-          });
-          this.loading = false;
-        });
+        .catch(() => {});
     },
     changeUserStatus(user) {
       this.selectedUser = user;
@@ -178,15 +167,7 @@ export default {
             },
           });
         })
-        .catch((error) => {
-          console.log("error" + error);
-          toast(error.response.data, {
-            cardProps: {
-              color: "warning",
-              class: "my-toast",
-            },
-          });
-        });
+        .catch(() => {});
     },
   },
   beforeMount() {

@@ -33,7 +33,6 @@
 
 <script>
 import { mapMutations } from "vuex";
-import { toast } from "vuetify-sonner";
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
   name: "Login",
@@ -58,22 +57,11 @@ export default {
         .then((response) => {
           console.log(response);
           if (response.status === 200) {
-            console.log("RESPONSE");
-            console.log(response.data);
             this.setUserData(response.data);
             this.$router.push("/home");
           }
         })
-        .catch(function (error) {
-          console.log("entrando al catch");
-          console.log(error.response);
-          toast(error.response.data, {
-            cardProps: {
-              color: "warning",
-              class: "my-toast",
-            },
-          });
-        });
+        .catch(() => {});
     },
   },
 };

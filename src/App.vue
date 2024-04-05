@@ -1,17 +1,15 @@
 <template>
   <div>
-    <layout></layout>
+    <router-view />
     <VSonner position="top-center" expand />
   </div>
 </template>
 
 <style></style>
 <script>
-import Layout from "@/components/Layout.vue";
 import { VSonner } from "vuetify-sonner";
 export default {
   components: {
-    Layout,
     VSonner,
   },
 };
