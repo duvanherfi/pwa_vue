@@ -90,7 +90,9 @@ const router = createRouter({
 });
 
 router.beforeEach((to) => {
-  const isAuthenticated = sessionStorage.getItem("sessionToken") != "";
+  const isAuthenticated =
+    sessionStorage.getItem("sessionToken") != "" &&
+    sessionStorage.getItem("sessionToken") !== null;
   if (!isAuthenticated && to.name !== "login") {
     return { name: "login" };
   }
