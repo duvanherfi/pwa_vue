@@ -28,6 +28,16 @@ export default createStore({
       state.name = userData.name;
       sessionStorage.setItem("name", userData.name);
     },
+    cleanUserData: (state) => {
+      state.sessionToken = null;
+      sessionStorage.setItem("sessionToken", null);
+
+      state.positionId = null;
+      sessionStorage.setItem("positionId", null);
+
+      state.name = null;
+      sessionStorage.setItem("name", null);
+    },
   },
   actions: {},
   modules: {},

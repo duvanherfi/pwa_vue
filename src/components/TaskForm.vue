@@ -135,7 +135,6 @@
 
 <script>
 import { mapGetters } from "vuex";
-import { toast } from "vuetify-sonner";
 
 export default {
   name: "TaskForm",
@@ -206,9 +205,7 @@ export default {
         .then((taskResponse) => {
           this.$emit("task-event", this.taskIndex, taskResponse.data);
         })
-        .catch((error) => {
-          this.errorOperation(error);
-        });
+        .catch(() => {});
     },
     updateTask(data) {
       this.axios
@@ -224,9 +221,7 @@ export default {
         .then((taskResponse) => {
           this.$emit("task-event", this.taskIndex, taskResponse.data);
         })
-        .catch((error) => {
-          this.errorOperation(error);
-        });
+        .catch(() => {});
     },
     uploadImage(event) {
       let selectedFile = event.target.files[0];
@@ -250,9 +245,7 @@ export default {
           this.$emit("task-event", this.taskIndex, this.getTaskInfo());
           this.$refs.imageupload.reset();
         })
-        .catch((error) => {
-          this.errorOperation(error);
-        });
+        .catch(() => {});
     },
     deleteImage(imageId, index) {
       this.axios
@@ -270,9 +263,7 @@ export default {
           this.images.splice(index, 1);
           this.$emit("task-event", this.taskIndex, this.getTaskInfo());
         })
-        .catch((error) => {
-          this.errorOperation(error);
-        });
+        .catch(() => {});
     },
     uploadAudio(event) {
       let selectedFile = event.target.files[0];
@@ -296,9 +287,7 @@ export default {
           this.$refs.audioupload.reset();
           this.$emit("task-event", this.taskIndex, this.getTaskInfo());
         })
-        .catch((error) => {
-          this.errorOperation(error);
-        });
+        .catch(() => {});
     },
     deleteAudio(audioId, index) {
       this.axios
@@ -316,9 +305,7 @@ export default {
           this.audios.splice(index, 1);
           this.$emit("task-event", this.taskIndex, this.getTaskInfo());
         })
-        .catch((error) => {
-          this.errorOperation(error);
-        });
+        .catch(() => {});
     },
     getTaskInfo() {
       return {
@@ -330,15 +317,6 @@ export default {
         images: this.images,
         audios: this.audios,
       };
-    },
-    errorOperation(error) {
-      console.log(error);
-      toast(error.response.data, {
-        cardProps: {
-          color: "warning",
-          class: "my-toast",
-        },
-      });
     },
   },
   beforeMount() {

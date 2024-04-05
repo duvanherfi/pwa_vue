@@ -1,11 +1,11 @@
 <template>
-  <h1>Bienvenid@ {{ userName }} !!</h1>
+  <h1>Página no encontrada</h1>
   <div class="d-flex justify-space-around align-center">
     <div class="ma-4">
       <v-img
         :aspect-ratio="1"
         class="bg-white"
-        src="@/assets/home_image.png"
+        src="@/assets/not_found.jpg"
         width="350"
       ></v-img>
     </div>
@@ -14,22 +14,7 @@
 
 <script>
 import { defineComponent } from "vue";
-import { mapGetters } from "vuex";
-
-// Components
-
 export default defineComponent({
-  name: "HomeView",
-  data: () => {
-    return {
-      userName: "",
-    };
-  },
-  computed: {
-    ...mapGetters(["name"]),
-  },
-  mounted() {
-    this.userName = this.name;
-  },
+  name: "NotFoundView",
 });
 </script>

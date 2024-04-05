@@ -181,15 +181,7 @@ export default {
             this.positions = response.data;
           }
         })
-        .catch(function (error) {
-          console.log("error" + error);
-          toast(error.response.data, {
-            cardProps: {
-              color: "warning",
-              class: "my-toast",
-            },
-          });
-        });
+        .catch(() => {});
     },
     gotoUsers() {
       router.push({ path: "/users" }).catch(() => {});
@@ -220,9 +212,7 @@ export default {
           this.gotoUsers();
           this.successOperation("creado");
         })
-        .catch((error) => {
-          this.errorOperation(error);
-        });
+        .catch(() => {});
     },
     updateUser() {
       let json = {
@@ -249,9 +239,7 @@ export default {
           this.position_id = response.data?.position?._id;
           this.successOperation("actualizado");
         })
-        .catch((error) => {
-          this.errorOperation(error);
-        });
+        .catch(() => {});
     },
     successOperation(operation) {
       toast("El usuario ha sido " + operation + " exitosamente", {
@@ -261,15 +249,6 @@ export default {
         },
       });
       //this.gotoUsers();
-    },
-    errorOperation(error) {
-      console.log("error" + error);
-      toast(error.response.data, {
-        cardProps: {
-          color: "warning",
-          class: "my-toast",
-        },
-      });
     },
   },
   beforeMount() {
