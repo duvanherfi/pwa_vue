@@ -18,10 +18,11 @@ export default {
   data: () => {
     return {
       items: [
-        { title: "Users", icon: "mdi-account-tie", path: "/users" },
-        { title: "Clients", icon: "mdi-account-circle", path: "/clients" },
-        { title: "Projects", icon: "mdi-anchor", path: "/projects" },
-        { title: "Reports", icon: "mdi-chart-bar", path: "/reports" },
+        { title: "Inicio", icon: "mdi-home", path: "/home" },
+        { title: "Usuarios", icon: "mdi-account-tie", path: "/users" },
+        { title: "Clientes", icon: "mdi-account-circle", path: "/clients" },
+        { title: "Proyectos", icon: "mdi-anchor", path: "/projects" },
+        { title: "Reportes", icon: "mdi-chart-bar", path: "/reports" },
       ],
     };
   },
