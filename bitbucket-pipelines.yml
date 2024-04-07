@@ -9,7 +9,7 @@ image:
 definitions:
   steps:
     - step: &deploy-heroku
-        name: Docker image with assets
+        name: Deploy to heroku
         trigger: manual
         script:
           - pipe: atlassian/heroku-deploy:2.4.0
