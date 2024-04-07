@@ -14,5 +14,8 @@ export default createVuetify({
       mdi,
     },
   },
+  theme: {
+    defaultTheme: "light",
+  },
 });
 // https://vuetifyjs.com/en/introduction/why-vuetify/#feature-guides

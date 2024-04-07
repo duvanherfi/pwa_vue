@@ -34,8 +34,6 @@ export default {
     },
   },
   mounted() {
-    console.log(this.label);
-    console.log(this.chartData);
     this.loadChart();
   },
 };

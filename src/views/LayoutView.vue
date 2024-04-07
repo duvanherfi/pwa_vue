@@ -1,9 +1,9 @@
 <template>
-  <div>
+  <v-container>
     <v-app id="inspire">
       <v-app-bar>
         <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
-        <v-app-bar-title>Pwa Building</v-app-bar-title>
+        <v-app-bar-title>Building App</v-app-bar-title>
         <h3>{{ userName }}</h3>
         <v-tooltip text="Cerrar Sesión">
           <template v-slot:activator="{ props }">
@@ -13,39 +13,57 @@
       </v-app-bar>
       <v-navigation-drawer v-model="drawer">
         <nav-bar></nav-bar>
+        <v-list dense nav>
+          <v-list-item size="x-large">
+            <v-list-item-media>
+              <v-icon>
+                {{
+                  enableDark ? "mdi-weather-night" : "mdi-white-balance-sunny"
+                }}
+              </v-icon>
+            </v-list-item-media>
+            <v-list-item-media>
+              <v-list-item-title>
+                <v-switch inset color="info" v-model="enableDark"></v-switch>
+              </v-list-item-title>
+            </v-list-item-media>
+          </v-list-item>
+        </v-list>
       </v-navigation-drawer>
       <v-main>
         <router-view />
       </v-main>
     </v-app>
-  </div>
+  </v-container>
 </template>
 
-<style></style>
 <script>
 import NavBar from "@/components/NavBar.vue";
 import { mapGetters } from "vuex";
 import { mapMutations } from "vuex";
+import { ref } from "vue";
 
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
   name: "LayoutView",
   components: { NavBar },
   data: () => ({
-    drawer: false,
+    drawer: ref(),
     userName: "",
+    enableDark: false,
   }),
   computed: {
-    ...mapGetters(["name"]),
-    ...mapGetters(["sessionToken"]),
+    ...mapGetters(["name", "sessionToken", "darkMode"]),
   },
   mounted() {
     this.userName = this.name;
   },
   methods: {
-    ...mapMutations([
-      "cleanUserData", // map `this.setUser(user)` to `this.$store.commit('setUser', user)`
-    ]),
+    ...mapMutations(["cleanUserData", "setDarkMode"]),
+    getDarkMode() {
+      this.enableDark = this.darkMode;
+      this.$vuetify.theme.global.name = this.enableDark ? "dark" : "light";
+    },
     logout() {
       this.axios
         .get(
@@ -58,6 +76,15 @@ export default {
         })
         .catch(() => {});
     },
+  },
+  watch: {
+    enableDark(newValue) {
+      this.$vuetify.theme.global.name = newValue ? "dark" : "light";
+      this.setDarkMode(newValue);
+    },
+  },
+  beforeMount() {
+    this.getDarkMode();
   },
 };
 </script>

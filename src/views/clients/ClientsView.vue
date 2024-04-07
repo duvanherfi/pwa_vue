@@ -9,7 +9,7 @@
           <v-btn
             v-bind="props"
             class="ma-2"
-            color="indigo"
+            color="secondary"
             icon="mdi-plus"
             @click="addClient()"
           ></v-btn>
@@ -33,7 +33,7 @@
           <td>
             <v-btn
               class="ma-2"
-              color="indigo"
+              color="primary"
               icon="mdi-pencil"
               @click="updateClient(item._id)"
             ></v-btn>
@@ -72,7 +72,6 @@ export default {
             this.sessionToken
         )
         .then((response) => {
-          console.log(response);
           if (response.status === 200) {
             this.clients = response.data;
           }

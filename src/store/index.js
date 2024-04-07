@@ -5,8 +5,12 @@ export default createStore({
     sessionToken: sessionStorage.getItem("sessionToken") || null,
     positionId: sessionStorage.getItem("positionId") || null,
     name: sessionStorage.getItem("name") || null,
+    darkMode: JSON.parse(sessionStorage.getItem("darkMode")) || false,
   },
   getters: {
+    darkMode: (state) => {
+      return JSON.parse(state.darkMode);
+    },
     sessionToken: (state) => {
       return state.sessionToken;
     },
@@ -18,6 +22,10 @@ export default createStore({
     },
   },
   mutations: {
+    setDarkMode: (state, darkMode) => {
+      state.darkMode = darkMode;
+      sessionStorage.setItem("darkMode", darkMode);
+    },
     setUserData: (state, userData) => {
       state.sessionToken = userData.session_token;
       sessionStorage.setItem("sessionToken", userData.session_token);
@@ -30,13 +38,13 @@ export default createStore({
     },
     cleanUserData: (state) => {
       state.sessionToken = null;
-      sessionStorage.setItem("sessionToken", null);
+      sessionStorage.removeItem("sessionToken");
 
       state.positionId = null;
-      sessionStorage.setItem("positionId", null);
+      sessionStorage.removeItem("positionId");
 
       state.name = null;
-      sessionStorage.setItem("name", null);
+      sessionStorage.removeItem("name");
     },
   },
   actions: {},

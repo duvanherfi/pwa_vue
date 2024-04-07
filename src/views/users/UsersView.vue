@@ -9,7 +9,7 @@
           <v-btn
             v-bind="props"
             class="ma-2"
-            color="indigo"
+            color="secondary"
             icon="mdi-plus"
             @click="addUser()"
           ></v-btn>
@@ -37,7 +37,7 @@
                 <v-btn
                   v-bind="props"
                   class="ma-2"
-                  color="indigo"
+                  color="primary"
                   icon="mdi-pencil"
                   @click="updateUser(item._id)"
                 ></v-btn>
@@ -48,7 +48,7 @@
                 <v-btn
                   v-bind="props"
                   class="ma-2"
-                  color="indigo"
+                  color="primary"
                   icon="mdi-check-bold"
                   @click="changeUserStatus(item)"
                 ></v-btn>
@@ -59,7 +59,7 @@
                 <v-btn
                   v-bind="props"
                   class="ma-2"
-                  color="indigo"
+                  color="primary"
                   icon="mdi-cancel"
                   @click="changeUserStatus(item)"
                 ></v-btn>
@@ -117,7 +117,6 @@ export default {
             this.sessionToken
         )
         .then((response) => {
-          console.log(response);
           if (response.status === 200) {
             this.users = response.data;
           }

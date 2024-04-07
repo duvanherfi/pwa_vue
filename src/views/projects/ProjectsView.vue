@@ -9,7 +9,7 @@
           <v-btn
             v-bind="props"
             class="ma-2"
-            color="indigo"
+            color="secondary"
             icon="mdi-plus"
             @click="addProject()"
           ></v-btn>
@@ -32,7 +32,7 @@
                 <v-btn
                   v-bind="props"
                   class="ma-2"
-                  color="indigo"
+                  color="primary"
                   icon="mdi-pencil"
                   @click="updateProject(item._id)"
                 ></v-btn>
@@ -72,7 +72,6 @@ export default {
             this.sessionToken
         )
         .then((response) => {
-          console.log(response);
           if (response.status === 200) {
             this.projects = response.data;
           }

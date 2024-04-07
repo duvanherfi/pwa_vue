@@ -1,10 +1,9 @@
 <template>
   <h1>Bienvenid@ {{ userName }} !!</h1>
   <div class="d-flex justify-space-around align-center">
-    <div class="ma-4">
+    <div class="ma-4 mx-auto">
       <v-img
         :aspect-ratio="1"
-        class="bg-white"
         src="@/assets/home_image.png"
         width="350"
       ></v-img>

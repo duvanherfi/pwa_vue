@@ -33,7 +33,6 @@ export default {
             this.sessionToken
         )
         .then((response) => {
-          console.log(response);
           if (response.status === 200) {
             this.userData = response.data;
             this.isDataLoaded = true;

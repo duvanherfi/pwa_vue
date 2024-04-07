@@ -23,14 +23,11 @@ axios.interceptors.response.use(
     return response;
   },
   (error) => {
-    console.log(error.response);
     let message = "";
     if (error.response.status === 500) {
       message = "Error inesperado";
-    } else if (error.response.status === 422) {
+    } else if (error.response.status < 500) {
       message = error.response.data;
-    } else {
-      message = error.response.response.data;
     }
 
     toast(message, {
