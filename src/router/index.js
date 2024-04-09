@@ -10,8 +10,7 @@ const routes = [
     children: [
       {
         path: "",
-        name: "home",
-        component: () => import("../views/HomeView.vue"),
+        redirect: "home",
       },
       {
         path: "home",
@@ -99,6 +98,8 @@ router.beforeEach((to) => {
   }
 
   const positionId = sessionStorage.getItem("positionId");
+  console.log(to.name);
+  console.log(/^projects/.test(to.name));
 
   if (
     positionId === "65f5dde3adca8f2c313447b9" ||
@@ -109,7 +110,7 @@ router.beforeEach((to) => {
       to.name != "main" &&
       to.name != "login" &&
       to.name != "home" &&
-      to.name != "projects"
+      !/^project/.test(to.name)
     ) {
       toast("No tiene acceso al módulo que intentas ingresar", {
         cardProps: {
@@ -125,7 +126,7 @@ router.beforeEach((to) => {
       to.name != "main" &&
       to.name != "login" &&
       to.name != "reports" &&
-      to.name != "clients"
+      !/^client/.test(to.name)
     ) {
       toast("No tiene acceso al módulo que intentas ingresar", {
         cardProps: {

@@ -39,10 +39,10 @@
           </v-col>
         </v-row>
         <v-row>
-          <v-col cols="6" md="6">
+          <v-col cols="4" md="6">
             <v-card-text>Imágenes:</v-card-text>
           </v-col>
-          <v-col cols="6" md="6">
+          <v-col cols="8" md="6">
             <v-file-input
               ref="imageupload"
               label="Añadir imagen"
@@ -66,7 +66,9 @@
             <v-img
               :src="
                 'https://api-pwa-building-0e9adbca88d4.herokuapp.com/' +
-                image.url
+                image.url +
+                '?t=' +
+                sessionToken
               "
             >
             </v-img>
@@ -84,10 +86,10 @@
           </v-col>
         </v-row>
         <v-row>
-          <v-col cols="6" md="6">
+          <v-col cols="4" md="6">
             <v-card-text>Audios:</v-card-text>
           </v-col>
-          <v-col cols="6" md="6">
+          <v-col cols="8" md="6">
             <v-file-input
               ref="audioupload"
               label="Añadir audio"
@@ -112,7 +114,9 @@
               controls
               :src="
                 'https://api-pwa-building-0e9adbca88d4.herokuapp.com/' +
-                audio.url
+                audio.url +
+                '?t=' +
+                sessionToken
               "
             ></audio>
             <v-tooltip text="Eliminar audio">
