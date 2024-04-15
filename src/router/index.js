@@ -98,8 +98,6 @@ router.beforeEach((to) => {
   }
 
   const positionId = sessionStorage.getItem("positionId");
-  console.log(to.name);
-  console.log(/^projects/.test(to.name));
 
   if (
     positionId === "65f5dde3adca8f2c313447b9" ||
@@ -125,7 +123,8 @@ router.beforeEach((to) => {
     if (
       to.name != "main" &&
       to.name != "login" &&
-      to.name != "reports" &&
+      to.name != "home" &&
+      !/^reports/.test(to.name) &&
       !/^client/.test(to.name)
     ) {
       toast("No tiene acceso al módulo que intentas ingresar", {
