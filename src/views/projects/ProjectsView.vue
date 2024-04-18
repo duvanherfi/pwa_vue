@@ -9,7 +9,7 @@
           <v-btn
             v-bind="props"
             class="ma-2"
-            color="indigo"
+            color="secondary"
             icon="mdi-plus"
             @click="addProject()"
           ></v-btn>
@@ -32,7 +32,7 @@
                 <v-btn
                   v-bind="props"
                   class="ma-2"
-                  color="indigo"
+                  color="primary"
                   icon="mdi-pencil"
                   @click="updateProject(item._id)"
                 ></v-btn>
@@ -47,7 +47,6 @@
 
 <script>
 import router from "@/router";
-import { toast } from "vuetify-sonner";
 import { mapGetters } from "vuex";
 
 export default {
@@ -73,20 +72,11 @@ export default {
             this.sessionToken
         )
         .then((response) => {
-          console.log(response);
           if (response.status === 200) {
             this.projects = response.data;
           }
         })
-        .catch(function (error) {
-          console.log(error.response);
-          toast(error.response.data, {
-            cardProps: {
-              color: "warning",
-              class: "my-toast",
-            },
-          });
-        });
+        .catch(() => {});
     },
   },
   beforeMount() {

@@ -163,15 +163,7 @@ export default {
             this.types = response.data;
           }
         })
-        .catch(function (error) {
-          console.log("error" + error);
-          toast(error.response.data, {
-            cardProps: {
-              color: "warning",
-              class: "my-toast",
-            },
-          });
-        });
+        .catch(function () {});
     },
     gotoClients() {
       router.push({ path: "/clients" }).catch(() => {});
@@ -202,9 +194,7 @@ export default {
           this.successOperation("creado");
           this.gotoClients();
         })
-        .catch((error) => {
-          this.errorOperation(error);
-        });
+        .catch(() => {});
     },
     updateClient() {
       let json = {
@@ -231,23 +221,12 @@ export default {
           this.type = response.data?.type?._id;
           this.successOperation("actualizado");
         })
-        .catch((error) => {
-          this.errorOperation(error);
-        });
+        .catch(() => {});
     },
     successOperation(operation) {
       toast("El cliente ha sido " + operation + " exitosamente", {
         cardProps: {
           color: "success",
-          class: "my-toast",
-        },
-      });
-    },
-    errorOperation(error) {
-      console.log("error" + error);
-      toast(error.response.data, {
-        cardProps: {
-          color: "warning",
           class: "my-toast",
         },
       });

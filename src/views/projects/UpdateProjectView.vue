@@ -9,7 +9,6 @@
 
 <script>
 import ProjectForm from "../../components/ProjectForm";
-import { toast } from "vuetify-sonner";
 import { mapGetters } from "vuex";
 
 export default {
@@ -34,21 +33,12 @@ export default {
             this.sessionToken
         )
         .then((response) => {
-          console.log(response);
           if (response.status === 200) {
             this.projectData = response.data;
             this.isDataLoaded = true;
           }
         })
-        .catch(function (error) {
-          console.log(error.response);
-          toast(error.response.data, {
-            cardProps: {
-              color: "warning",
-              class: "my-toast",
-            },
-          });
-        });
+        .catch(() => {});
     },
   },
   beforeMount() {

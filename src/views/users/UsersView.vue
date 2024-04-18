@@ -9,7 +9,7 @@
           <v-btn
             v-bind="props"
             class="ma-2"
-            color="indigo"
+            color="secondary"
             icon="mdi-plus"
             @click="addUser()"
           ></v-btn>
@@ -37,7 +37,7 @@
                 <v-btn
                   v-bind="props"
                   class="ma-2"
-                  color="indigo"
+                  color="primary"
                   icon="mdi-pencil"
                   @click="updateUser(item._id)"
                 ></v-btn>
@@ -48,7 +48,7 @@
                 <v-btn
                   v-bind="props"
                   class="ma-2"
-                  color="indigo"
+                  color="primary"
                   icon="mdi-check-bold"
                   @click="changeUserStatus(item)"
                 ></v-btn>
@@ -59,7 +59,7 @@
                 <v-btn
                   v-bind="props"
                   class="ma-2"
-                  color="indigo"
+                  color="primary"
                   icon="mdi-cancel"
                   @click="changeUserStatus(item)"
                 ></v-btn>
@@ -97,7 +97,6 @@ export default {
     return {
       confirmDialog: false,
       users: [],
-      loading: true,
       dialogText: "",
     };
   },
@@ -118,22 +117,11 @@ export default {
             this.sessionToken
         )
         .then((response) => {
-          console.log(response);
           if (response.status === 200) {
             this.users = response.data;
           }
-          this.loading = false;
         })
-        .catch(function (error) {
-          console.log(error.response);
-          toast(error.response.data, {
-            cardProps: {
-              color: "warning",
-              class: "my-toast",
-            },
-          });
-          this.loading = false;
-        });
+        .catch(() => {});
     },
     changeUserStatus(user) {
       this.selectedUser = user;
@@ -178,15 +166,7 @@ export default {
             },
           });
         })
-        .catch((error) => {
-          console.log("error" + error);
-          toast(error.response.data, {
-            cardProps: {
-              color: "warning",
-              class: "my-toast",
-            },
-          });
-        });
+        .catch(() => {});
     },
   },
   beforeMount() {

@@ -2,7 +2,7 @@
   <v-form v-model="valid" ref="form">
     <v-container>
       <v-row>
-        <v-col cols="6" md="6">
+        <v-col cols="9" md="6">
           <v-text-field
             v-model="name"
             :loading="loadingProject"
@@ -11,7 +11,7 @@
             required
           ></v-text-field>
         </v-col>
-        <v-col cols="6" md="6">
+        <v-col cols="3" md="6">
           <v-tooltip text="Guardar">
             <template v-slot:activator="{ props }">
               <v-btn
@@ -50,7 +50,7 @@
           <v-col
             v-for="(task, i) in tasks"
             :key="task._id"
-            cols="6"
+            cols="12"
             md="6"
             class="task-col"
           >
@@ -140,9 +140,7 @@ export default {
           .then(() => {
             this.tasks.splice(index, 1);
           })
-          .catch((error) => {
-            console.log(error);
-          });
+          .catch(() => {});
       }
     },
     gotoProjects() {
@@ -173,8 +171,8 @@ export default {
         .then((projectResponse) => {
           this.successOperation("creado", projectResponse);
         })
-        .catch((error) => {
-          this.errorOperation(error);
+        .catch(() => {
+          this.errorOperation();
         });
     },
     updateProject() {
@@ -193,8 +191,8 @@ export default {
         .then((projectResponse) => {
           this.successOperation("actualizado", projectResponse);
         })
-        .catch((error) => {
-          this.errorOperation(error);
+        .catch(() => {
+          this.errorOperation();
         });
     },
     successOperation(operation, projectResponse) {
@@ -207,15 +205,8 @@ export default {
         },
       });
     },
-    errorOperation(error) {
+    errorOperation() {
       this.loadingProject = false;
-      console.log("error" + error);
-      toast(error.response.data, {
-        cardProps: {
-          color: "warning",
-          class: "my-toast",
-        },
-      });
     },
     cardEventHandler(index, data) {
       this.tasks[index] = data;

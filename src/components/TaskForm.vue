@@ -39,10 +39,10 @@
           </v-col>
         </v-row>
         <v-row>
-          <v-col cols="6" md="6">
+          <v-col cols="4" md="6">
             <v-card-text>Imágenes:</v-card-text>
           </v-col>
-          <v-col cols="6" md="6">
+          <v-col cols="8" md="6">
             <v-file-input
               ref="imageupload"
               label="Añadir imagen"
@@ -66,7 +66,9 @@
             <v-img
               :src="
                 'https://api-pwa-building-0e9adbca88d4.herokuapp.com/' +
-                image.url
+                image.url +
+                '?t=' +
+                sessionToken
               "
             >
             </v-img>
@@ -84,10 +86,10 @@
           </v-col>
         </v-row>
         <v-row>
-          <v-col cols="6" md="6">
+          <v-col cols="4" md="6">
             <v-card-text>Audios:</v-card-text>
           </v-col>
-          <v-col cols="6" md="6">
+          <v-col cols="8" md="6">
             <v-file-input
               ref="audioupload"
               label="Añadir audio"
@@ -112,7 +114,9 @@
               controls
               :src="
                 'https://api-pwa-building-0e9adbca88d4.herokuapp.com/' +
-                audio.url
+                audio.url +
+                '?t=' +
+                sessionToken
               "
             ></audio>
             <v-tooltip text="Eliminar audio">
@@ -205,9 +209,7 @@ export default {
         .then((taskResponse) => {
           this.$emit("task-event", this.taskIndex, taskResponse.data);
         })
-        .catch((error) => {
-          console.log(error);
-        });
+        .catch(() => {});
     },
     updateTask(data) {
       this.axios
@@ -223,9 +225,7 @@ export default {
         .then((taskResponse) => {
           this.$emit("task-event", this.taskIndex, taskResponse.data);
         })
-        .catch((error) => {
-          console.log(error);
-        });
+        .catch(() => {});
     },
     uploadImage(event) {
       let selectedFile = event.target.files[0];
@@ -249,9 +249,7 @@ export default {
           this.$emit("task-event", this.taskIndex, this.getTaskInfo());
           this.$refs.imageupload.reset();
         })
-        .catch((error) => {
-          console.log(error);
-        });
+        .catch(() => {});
     },
     deleteImage(imageId, index) {
       this.axios
@@ -269,9 +267,7 @@ export default {
           this.images.splice(index, 1);
           this.$emit("task-event", this.taskIndex, this.getTaskInfo());
         })
-        .catch((error) => {
-          console.log(error);
-        });
+        .catch(() => {});
     },
     uploadAudio(event) {
       let selectedFile = event.target.files[0];
@@ -295,9 +291,7 @@ export default {
           this.$refs.audioupload.reset();
           this.$emit("task-event", this.taskIndex, this.getTaskInfo());
         })
-        .catch((error) => {
-          console.log(error);
-        });
+        .catch(() => {});
     },
     deleteAudio(audioId, index) {
       this.axios
@@ -315,9 +309,7 @@ export default {
           this.audios.splice(index, 1);
           this.$emit("task-event", this.taskIndex, this.getTaskInfo());
         })
-        .catch((error) => {
-          console.log(error);
-        });
+        .catch(() => {});
     },
     getTaskInfo() {
       return {
